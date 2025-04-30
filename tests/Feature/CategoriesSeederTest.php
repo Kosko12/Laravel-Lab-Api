@@ -16,10 +16,10 @@ class CategoriesSeederTest extends TestCase
         $this->seed(CategorySeeder::class);
         
         $this->assertDatabaseHas('categories', [
-            'name' => 'Biochemia',
+            'name' => 'Układ pokarmowy',
         ]);
         $this->assertDatabaseHas('categories', [
-            'name' => 'Hematologia',
+            'name' => 'Układ krążenia',
         ]);
     }
 }

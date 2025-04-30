@@ -20,15 +20,15 @@ class ProductsSeederTest extends TestCase
         $this->seed(ProductSeeder::class);
 
         $this->assertDatabaseHas('products', [
-            'name' => 'Badanie poziomu glukozy',
+            'name' => 'e-Pakiet Zdrowie Ogólne',
         ]);
 
         $this->assertDatabaseHas('products', [
-            'name' => 'Morfologia krwi',
+            'name' => 'e-Pakiet Alergia Mieszana',
         ]);
 
-        $product = Product::where('name', 'Badanie poziomu glukozy')->first();
-        $category = Category::where('name', 'Biochemia')->first();
+        $product = Product::where('name', 'e-Pakiet Diagnostyka Metaboliczna')->first();
+        $category = Category::where('name', 'Profilaktyka')->first();
 
         $this->assertTrue($product->categories->contains($category));
     }
