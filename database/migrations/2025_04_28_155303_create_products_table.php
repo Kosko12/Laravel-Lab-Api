@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
+            $table->string('name');                     // Nazwa badania
+            $table->text('description')->nullable();    // Opis badania
+            $table->decimal('price', 8, 2);             // Cena brutto
+            $table->integer('delivery_days');           // Czas realizacji (w dniach)
+            $table->boolean('active')->default(true);   // Czy badanie jest dostępne
             $table->timestamps();
         });
     }
