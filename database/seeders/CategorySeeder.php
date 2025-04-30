@@ -2,34 +2,33 @@
 
 namespace Database\Seeders;
 
-use App\Models\Product;
-use App\Models\Category;
 use Illuminate\Database\Seeder;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Category;
 
 class CategorySeeder extends Seeder
 {
-    public function run(): void
+    public function run()
     {
-        // Tworzymy kilka kategorii za pomocą fabryki
-        Category::factory()->create([
-            'name' => 'Biochemia',
-        ]);
-        
-        Category::factory()->create([
-            'name' => 'Hematologia',
-        ]);
-        
-        Category::factory()->create([
-            'name' => 'Diagnostyka ogólna',
-        ]);
-        
-        Category::factory()->create([
-            'name' => 'Mikrobiologia',
-        ]);
-        
-        Category::factory()->create([
-            'name' => 'Genetyka',
-        ]);
+        $categories = [
+            'Profilaktyka',
+            'Dla kobiet',
+            'Dla mężczyzn',
+            'Nietolerancje i alergie',
+            'Hormony',
+            'Odpornościowe',
+            'Układ pokarmowy',
+            'Układ krążenia',
+            'Układ moczowy',
+            'Układ oddechowy',
+            'Choroby zakaźne',
+            'Trzustka i wątroba',
+            'Alergie'
+        ];
+
+        foreach ($categories as $name) {
+            Category::factory()->create([
+                'name' => $name
+            ]);
+        }
     }
 }

@@ -2,58 +2,67 @@
 
 namespace Database\Seeders;
 
+use Illuminate\Database\Seeder;
 use App\Models\Product;
 use App\Models\Category;
-use Illuminate\Database\Seeder;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Support\Str;
 
 class ProductSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
-    public function run(): void
+    public function run()
     {
-        // Tworzymy kilka produktów za pomocą fabryki
-        Product::factory()->create([
-            'name' => 'Badanie poziomu glukozy',
-            'description' => 'Badanie poziomu glukozy we krwi',
-            'price' => 50.00,
-            'delivery_days' => 2,
-            'active' => true,
-        ])->categories()->attach([
-            Category::where('name', 'Biochemia')->first()->id,
-            Category::where('name', 'Diagnostyka ogólna')->first()->id,
-        ]);
+        $data = [
+            'Profilaktyka' => [
+                ['name' => 'e-Pakiet Zdrowie Ogólne', 'price' => 249.00, 'delivery_days' => 2],
+                ['name' => 'e-Pakiet Diagnostyka Metaboliczna', 'price' => 199.00, 'delivery_days' => 3],
+                ['name' => 'e-Pakiet Przeglądowy dla Dorosłych', 'price' => 299.00, 'delivery_days' => 2],
+            ],
+            'Dla kobiet' => [
+                ['name' => 'e-Pakiet Hormony Kobiece', 'price' => 159.00, 'delivery_days' => 4],
+                ['name' => 'e-Pakiet Zdrowie Intymne', 'price' => 179.00, 'delivery_days' => 3],
+                ['name' => 'e-Pakiet Ciąża i Płodność', 'price' => 219.00, 'delivery_days' => 5],
+            ],
+            'Dla mężczyzn' => [
+                ['name' => 'e-Pakiet Testosteron i Prostata', 'price' => 189.00, 'delivery_days' => 3],
+                ['name' => 'e-Pakiet Kondycja Fizyczna', 'price' => 169.00, 'delivery_days' => 2],
+                ['name' => 'e-Pakiet Zdrowie Mężczyzny 40+', 'price' => 259.00, 'delivery_days' => 4],
+            ],
+            'Odpornościowe' => [
+                ['name' => 'e-Pakiet Układ Odpornościowy', 'price' => 149.00, 'delivery_days' => 3],
+                ['name' => 'e-Pakiet Autoimmunologia', 'price' => 199.00, 'delivery_days' => 4],
+                ['name' => 'e-Pakiet Immunoglobuliny', 'price' => 129.00, 'delivery_days' => 2],
+            ],
+            'Trzustka i wątroba' => [
+                ['name' => 'e-Pakiet Wątroba i Drogi Żółciowe', 'price' => 179.00, 'delivery_days' => 3],
+                ['name' => 'e-Pakiet Trzustka - Podstawowy', 'price' => 159.00, 'delivery_days' => 3],
+                ['name' => 'e-Pakiet Enzymy Wątrobowe', 'price' => 189.00, 'delivery_days' => 2],
+            ],
+            'Alergie' => [
+                ['name' => 'e-Pakiet Pokarmowe Alergeny', 'price' => 299.00, 'delivery_days' => 5],
+                ['name' => 'e-Pakiet Wziewne Alergeny', 'price' => 279.00, 'delivery_days' => 5],
+                ['name' => 'e-Pakiet Alergia Mieszana', 'price' => 319.00, 'delivery_days' => 6],
+            ],
+        ];
 
-        Product::factory()->create([
-            'name' => 'Morfologia krwi',
-            'description' => 'Badanie krwi oceniające ogólny stan zdrowia',
-            'price' => 40.00,
-            'delivery_days' => 3,
-            'active' => true,
-        ])->categories()->attach([
-            Category::where('name', 'Hematologia')->first()->id,
-        ]);
+        foreach ($data as $categoryName => $products) {
+            $category = Category::where('name', $categoryName)->first();
 
-        Product::factory()->create([
-            'name' => 'Badanie genetyczne',
-            'description' => 'Badanie w kierunku chorób genetycznych',
-            'price' => 200.00,
-            'delivery_days' => 5,
-            'active' => true,
-        ])->categories()->attach([
-            Category::where('name', 'Genetyka')->first()->id,
-        ]);
+            if (!$category) {
+                continue;
+            }
 
-        Product::factory()->create([
-            'name' => 'Badanie bakteriologiczne',
-            'description' => 'Badanie w kierunku bakterii patogennych',
-            'price' => 75.00,
-            'delivery_days' => 3,
-            'active' => true,
-        ])->categories()->attach([
-            Category::where('name', 'Mikrobiologia')->first()->id,
-        ]);
+            foreach ($products as $product) {
+                $newProduct = Product::factory()->create([
+                    'name' => $product['name'],
+                    'description' => 'Opis dla badania: ' . $product['name'],
+                    'price' => $product['price'],
+                    'delivery_days' => $product['delivery_days'],
+                ]);
+
+                $newProduct->categories()->sync($category['id'] ?? []);
+
+            }
+            
+        }
     }
 }
